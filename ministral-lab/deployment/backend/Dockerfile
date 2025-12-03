@@ -1,14 +1,12 @@
 FROM vllm/vllm-openai:latest
 
-# Remove conflicting default libraries
-RUN pip uninstall -y transformers vllm
-
-# Install the specific RC versions required by Ministral 3 docs
+# Install Ministral 3 dependencies FIRST
 RUN pip install --no-cache-dir \
     "transformers==5.0.0rc0" \
     "mistral-common>=1.8.6"
 
-# Install vLLM Nightly (Required for Ministral 3 architecture)
-RUN pip install -U vllm \
+# Then install vLLM from source (nightly has Ministral 3 support)
+RUN pip install --no-cache-dir \
+    vllm \
     --pre \
     --extra-index-url https://wheels.vllm.ai/nightly
