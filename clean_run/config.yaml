@@ -1,0 +1,59 @@
+# config.yaml
+base_model: mistralai/Ministral-3-8B-Base-2512
+model_type: MistralForCausalLM
+tokenizer_type: LlamaTokenizer
+
+# Hugging Face Access
+trust_remote_code: true
+
+# ---------------------------------------------------------
+# DATASET CONFIGURATION (CPT / Knowledge Injection)
+# ---------------------------------------------------------
+datasets:
+  - path: ClimatePolicyRadar/all-document-text-data
+    type: completion 
+    field: text
+    train_on_split: train
+    
+  - path: Ekimetrics/climateqa-ipcc-ipbes-reports-1.0
+    type: completion
+    field: content
+
+# ---------------------------------------------------------
+# TRAINING PARAMETERS (A6000 / 48GB VRAM Optimized)
+# ---------------------------------------------------------
+# Ministral handles 128k context, but 8k is safer for training speed/VRAM
+sequence_len: 8192
+sample_packing: true        # ESSENTIAL for raw text (3x speedup)
+pad_to_sequence_len: true
+
+adapter: lora
+lora_r: 64                  # High rank for better knowledge retention
+lora_alpha: 128
+lora_dropout: 0.05
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Optimization for A6000
+gradient_accumulation_steps: 2  # Adjusted for A6000 to keep batch size high
+micro_batch_size: 6             # Tweak this: If OOM, drop to 4. If free VRAM, raise to 8.
+num_epochs: 1                   # 1 Epoch is usually enough for 70M tokens
+optimizer: adamw_torch
+lr_scheduler: cosine
+learning_rate: 0.00002          # Low LR is critical for Continued Pre-Training (CPT)
+
+# Hardware settings
+bf16: true                      # A6000 does native bfloat16
+fp16: false
+flash_attention: true           # Required for speed
+
+# Checkpointing
+output_dir: ./outputs
+save_steps: 200
+logging_steps: 1

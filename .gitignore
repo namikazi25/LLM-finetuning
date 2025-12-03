@@ -1,0 +1,137 @@
+# General
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+venv*/
+pip-log.txt
+
+# Conda
+.conda/
+conda-meta/
+envs/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Testing / coverage
+.pytest_cache/
+.tox/
+.coverage
+coverage.xml
+htmlcov/
+
+# Type checkers
+.mypy_cache/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs and runtime files
+logs/
+*.log
+debug.log
+nohup.out
+
+# Docker
+docker-compose.override.yml
+**/docker-compose.override.yml
+docker-compose.*.yml
+/.dockerignore
+
+# Environment / secrets
+.env
+.env.*
+.env.local
+secrets.env
+*.secret
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+ehthumbs.db
+Icon?
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+
+# Caches
+.cache/
+cache/
+__MACOSX/
+
+# Notebook checkpoints and outputs
+*.nbconvert.ipynb
+
+# Model artifacts and large binary files (ignore large checkpoints)
+# - match common model formats used in this repo: safetensors, pytorch checkpoints, adapter files
+**/model/
+*.safetensors
+model-*.safetensors
+adapter_model.safetensors
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.tar.gz
+
+# Session files, generated sessions and ephemeral data
+**/sessions/
+**/sessions/*
+
+# Output and results
+output/
+results/
+logs/
+
+# Backup and export files
+*.bak
+*.old
+*.orig
+
+# IDE / editor metadata
+.project
+.classpath
+.settings/
+
+# Secrets, keys
+*.pem
+*.key
+
+# Large datasets, caches, and DBs
+data/
+datasets/
+*.sqlite
+*.db
