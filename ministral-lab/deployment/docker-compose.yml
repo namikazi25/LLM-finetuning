@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    runtime: nvidia
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ./model:/model
+    ports:
+      - "8000:8000"
+    command: >
+      /model
+      --max-model-len 4096
+      --gpu-memory-utilization 0.9
+      --host 0.0.0.0
+      --port 8000
+      --trust-remote-code
+      --tokenizer-mode mistral
+      --config-format mistral
+      --load-format mistral
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  frontend:
+    build: ./app
+    ports:
+      - "8501:8501"
+    environment:
+      - VLLM_API_URL=http://backend:8000/v1
+    volumes:
+      - ./logs:/app/logs
+      - ./sessions:/app/sessions
+    depends_on:
+      - backend

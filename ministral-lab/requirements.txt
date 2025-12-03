@@ -1,0 +1,13 @@
+# The Critical Dependencies for Ministral 3
+transformers==5.0.0rc0
+mistral-common>=1.8.6
+vllm>=0.6.4  # Optional, for serving later
+torch>=2.4.0
+
+# Training Tools
+accelerate
+peft
+bitsandbytes
+datasets
+trl
+scipy
