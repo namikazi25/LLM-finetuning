@@ -11,12 +11,16 @@ services:
       - ./model:/model
     ports:
       - "8000:8000"
+    
     command: >
-      vllm serve /model
+      vllm serve mistralai/Ministral-3-8B-Base-2512
+      --enable-lora
+      --lora-modules climate-v1=/model/ministral-climate-v1
       --max-model-len 4096
       --gpu-memory-utilization 0.9
       --host 0.0.0.0
       --port 8000
+
     deploy:
       resources:
         reservations:
