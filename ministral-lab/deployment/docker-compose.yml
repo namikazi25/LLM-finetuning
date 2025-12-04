@@ -1,24 +1,13 @@
-# deployment/docker-compose.yml
+version: '3.8'
+
 services:
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    build: ./backend
+    runtime: nvidia
     volumes:
-      - ./model:/workspace/model:ro
+      - ./model:/model
     ports:
       - "8000:8000"
-    environment:
-      - HF_TOKEN=${HF_TOKEN:-}
-      - CUDA_VISIBLE_DEVICES=0
-    command: >
-      --model /workspace/model
-      --host 0.0.0.0
-      --port 8000
-      --max-model-len 4096
-      --limit-mm-per-prompt '{"image":0}'
-      --dtype bfloat16
-      --gpu-memory-utilization 0.9
     deploy:
       resources:
         reservations:
@@ -26,21 +15,15 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    shm_size: '4gb'
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   frontend:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
+    build: ./app
     ports:
       - "8501:8501"
     environment:
       - VLLM_API_URL=http://backend:8000/v1
+    volumes:
+      - ./logs:/app/logs
+      - ./sessions:/app/sessions
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
