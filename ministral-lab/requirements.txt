@@ -1,13 +1,19 @@
-# The Critical Dependencies for Ministral 3
-transformers==5.0.0rc0
-mistral-common>=1.8.6
-vllm>=0.6.4  # Optional, for serving later
-torch>=2.4.0
+# Unsloth Training Requirements
+# Install with: pip install -r requirements.txt
 
-# Training Tools
-accelerate
-peft
-bitsandbytes
-datasets
-trl
-scipy
+# Unsloth (install first)
+unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git
+
+# Core dependencies (install with --no-deps after unsloth)
+trl>=0.9.0
+peft>=0.12.0
+accelerate>=0.30.0
+bitsandbytes>=0.43.0
+
+# Data handling
+datasets>=2.19.0
+transformers>=4.43.0
+
+# Utils
+torch>=2.4.0
+safetensors>=0.4.0

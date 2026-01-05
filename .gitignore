@@ -115,6 +115,9 @@ adapter_model.safetensors
 output/
 results/
 logs/
+ministral-lab/unsloth_compiled_cache/
+ministral-lab/cached_climate_80m/
+ministral-lab/ministral-climate-v2/
 
 # Backup and export files
 *.bak
